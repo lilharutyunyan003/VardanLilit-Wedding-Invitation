@@ -16,7 +16,7 @@
   --cream: #F5F0E8;
   --ink-dark: #2A2420;
   --ink-soft-dark: #5A524A;
-  --accent: #d4a59a; /* Lightened accent for dark backgrounds */
+  --accent: #d4a59a;
   --serif-display: 'Playfair Display', Georgia, serif;
   --bodoni: 'Bodoni Moda', 'Bodoni 72', 'Didot', 'Bodoni MT', Georgia, serif;
   --serif: 'Cormorant Garamond', Georgia, serif;
@@ -37,6 +37,78 @@ body {
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ===== ENTER OVERLAY (For Autoplay Permission) ===== */
+#enter-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease, visibility 1s ease;
+}
+
+#enter-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.enter-content {
+  text-align: center;
+  padding: 24px;
+  animation: fadeUp 1s ease 0.3s forwards;
+  opacity: 0;
+}
+
+.enter-names {
+  font-family: var(--bodoni);
+  font-style: italic;
+  font-size: clamp(36px, 8vw, 56px);
+  color: var(--white);
+  margin-bottom: 8px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.enter-date {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 40px;
+}
+
+.enter-btn {
+  padding: 16px 48px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: var(--white);
+  font-family: var(--serif-display);
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.enter-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: rgba(255,255,255,0.1);
+  transition: left 0.5s ease;
+  z-index: -1;
+}
+
+.enter-btn:hover::before { left: 0; }
+.enter-btn:hover { border-color: var(--white); transform: translateY(-2px); }
 
 /* ===== SEAMLESS GLOBAL BACKGROUND ===== */
 .fixed-bg {
@@ -60,13 +132,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   to { opacity: 1; transform: scale(1); }
 }
 
-/* 
-  SEAMLESS GRADIENT:
-  0% - 35%: Subtle tint for Page 1 readability.
-  35% - 60%: Nearly transparent, keeping Pages 2 & 3 background fully visible.
-  60% - 85%: Gradual, smooth transition to dark.
-  85% - 100%: Deep dark backdrop for seamless reading of lower sections.
-*/
 .fixed-bg::after {
   content: '';
   position: absolute;
@@ -411,13 +476,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .love-story-line { height: clamp(60px, 12vh, 100px); }
 }
 
-/* =================================================================
-   PAGE 3+ SEAMLESS DARK TRANSITION
-   ================================================================= */
-
 .light-section {
   background: transparent;
-  color: var(--cream); /* Light text for the darkening background */
+  color: var(--cream);
   position: relative;
   z-index: 1;
 }
@@ -506,7 +567,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transform: translateY(0); 
 }
 
-/* ===== STACKED DATE MATCHING PAGE 1 STYLE ===== */
 .date-stacked-light {
   display: flex;
   flex-direction: column;
@@ -549,7 +609,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition-delay: 0.4s;
 }
 
-/* ===== REFINED COUNTDOWN ===== */
 .final-date {
   padding: clamp(80px, 12vh, 120px) 24px;
   text-align: center;
@@ -632,7 +691,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .countdown-number { letter-spacing: -1px; }
 }
 
-/* ===== ANIMATED GALLERY SECTION ===== */
 .gallery-section {
   padding: clamp(60px, 10vh, 100px) 24px;
   position: relative;
@@ -699,7 +757,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
 }
 
-/* ===== TIMELINE PROGRAM SECTION ===== */
 .program-section {
   padding: clamp(80px, 12vh, 140px) 24px;
   position: relative;
@@ -922,7 +979,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-bottom-color: var(--accent);
 }
 
-/* ===== PREMIUM RSVP CARD ===== */
 .rsvp-section {
   max-width: 640px;
   margin: 40px auto 100px;
@@ -933,7 +989,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.6);
-  color: var(--ink-dark); /* Keeps inner text dark on the light card */
+  color: var(--ink-dark);
   opacity: 0;
   transform: translateY(50px);
   transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1111,7 +1167,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .rsvp-message.success { display: block; background: rgba(42, 36, 32, 0.04); color: var(--ink-dark); border: 1px solid rgba(42, 36, 32, 0.08); }
 .rsvp-message.error { display: block; background: rgba(192, 57, 43, 0.06); color: #c0392b; border: 1px solid rgba(192, 57, 43, 0.15); }
 
-/* ===== FOOTER ===== */
 .footer {
   padding: 100px 24px 120px;
   text-align: center;
@@ -1146,7 +1201,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* ===== FLOATING BUTTONS ===== */
 .floating-btns {
   position: fixed;
   z-index: 90;
@@ -1178,7 +1232,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .floating-btn.faq-btn { background: rgba(42, 36, 32, 0.9); font-size: 13px; font-weight: 600; letter-spacing: 1px; }
 .floating-btn.chat-btn { background: rgba(74, 222, 128, 0.9); font-size: 22px; }
 
-/* ===== MODAL (DARK) ===== */
+.floating-btn.music-btn { 
+  background: rgba(255,255,255,0.1); 
+  font-size: 18px; 
+}
+.floating-btn.music-btn.playing { 
+  animation: pulse-music 2s infinite; 
+  background: rgba(212, 165, 154, 0.3);
+  border-color: var(--accent);
+}
+
+@keyframes pulse-music {
+  0% { box-shadow: 0 0 0 0 rgba(212, 165, 154, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(212, 165, 154, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 165, 154, 0); }
+}
+
 .modal-overlay {
   display: none;
   position: fixed;
@@ -1262,6 +1331,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </head>
 <body>
 
+<!-- ===== AUDIO ELEMENT ===== -->
+<!-- ⚠️ IMPORTANT: REPLACE THE 'src' LINK BELOW WITH YOUR ACTUAL ED SHEERAN MP3 LINK -->
+<!-- Example: src="https://yourwebsite.com/music/perfect.mp3" -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=romantic-piano-111854.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ===== ENTER OVERLAY ===== -->
+<div id="enter-overlay">
+  <div class="enter-content">
+    <div class="enter-names">Vardan & Lilit</div>
+    <div class="enter-date">17 · 04 · 2027</div>
+    <button class="enter-btn" id="enterBtn">Բացել հրավերը</button>
+  </div>
+</div>
+
 <!-- SEAMLESS GLOBAL BACKGROUND -->
 <div class="fixed-bg">
   <img src="https://cdn.shopify.com/s/files/1/0771/6290/5791/files/photo_2026-10-16_23-00-43.jpg?v=1792178285" alt="Vardan and Lilit">
@@ -1314,7 +1399,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     </div>
   </section>
 
-  <!-- ===== PAGE 3: INVITATION TEXT (Background visible like Page 2) ===== -->
+  <!-- ===== PAGE 3: INVITATION TEXT ===== -->
   <section class="seamless-section invitation-text light-section" id="invitation">
     <div class="decorative-divider" data-reveal>
       <span>✦</span>
@@ -1332,7 +1417,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     </div>
   </section>
 
-  <!-- ===== PAGE 4: COUNTDOWN (Gradually darkening) ===== -->
+  <!-- ===== PAGE 4: COUNTDOWN ===== -->
   <section class="seamless-section final-date light-section" id="final-date">
     <p class="waiting-text" data-reveal>Սպասում ենք Ձեզ մեր հարսանիքին</p>
 
@@ -1512,6 +1597,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
   <!-- ===== FLOATING BUTTONS ===== -->
   <div class="floating-btns">
+    <button type="button" class="floating-btn music-btn" id="musicToggle" aria-label="Toggle Music">🎵</button>
     <button type="button" class="floating-btn faq-btn" id="faqOpen" aria-label="FAQ">FAQ</button>
     <button type="button" class="floating-btn chat-btn" aria-label="Chat">💬</button>
   </div>
@@ -1564,6 +1650,46 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   if (!root || root.dataset.init === '1') return;
   root.dataset.init = '1';
 
+  // ===== BULLETPROOF MUSIC & ENTER OVERLAY LOGIC =====
+  const enterOverlay = document.getElementById('enter-overlay');
+  const enterBtn = document.getElementById('enterBtn');
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+  let isPlaying = false;
+
+  enterBtn.addEventListener('click', () => {
+    // 1. IMMEDIATELY hide the overlay so the user is NEVER stuck
+    enterOverlay.classList.add('hidden');
+    
+    // 2. Try to play the music safely
+    if (bgMusic) {
+      bgMusic.volume = 0.5; // 50% volume for romantic background feel
+      bgMusic.play().then(() => {
+        isPlaying = true;
+        musicToggle.classList.add('playing');
+      }).catch(err => {
+        console.log("Audio autoplay blocked by browser (this is normal):", err);
+        // The page is already open, so the user can still manually click the music button later
+      });
+    }
+  });
+
+  musicToggle.addEventListener('click', () => {
+    if (!bgMusic) return;
+    
+    if (isPlaying) {
+      bgMusic.pause();
+      musicToggle.classList.remove('playing');
+      musicToggle.innerHTML = '🔇';
+    } else {
+      bgMusic.play();
+      musicToggle.classList.add('playing');
+      musicToggle.innerHTML = '🎵';
+    }
+    isPlaying = !isPlaying;
+  });
+
+  // ===== SCROLL LOGIC =====
   const scrollDownBtn = root.querySelector('#scrollDown');
   const loveStorySection = root.querySelector('#love-story');
 
@@ -1574,6 +1700,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     });
   }
 
+  // ===== REVEAL ON SCROLL =====
   const revealItems = root.querySelectorAll('[data-reveal]');
   
   if ('IntersectionObserver' in window) {
@@ -1610,6 +1737,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     if (loveTitle) loveTitle.classList.add('visible');
   }
 
+  // ===== MAP TOGGLE =====
   document.querySelectorAll('.map-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const details = this.nextElementSibling;
@@ -1624,6 +1752,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     });
   });
 
+  // ===== COUNTDOWN =====
   const weddingDate = new Date('April 17, 2027 15:00:00').getTime();
   let timerInterval;
   
@@ -1654,6 +1783,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   timerInterval = setInterval(updateCountdown, 1000);
   updateCountdown();
 
+  // ===== RSVP FORM =====
   const form = root.querySelector('#rsvpForm');
   const nameInput = root.querySelector('#guestName');
   const nameError = root.querySelector('#nameError');
@@ -1749,6 +1879,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     }, 1200);
   });
 
+  // ===== FAQ MODAL =====
   const modal = root.querySelector('#faqModal');
   const faqOpen = root.querySelector('#faqOpen');
   const faqClose = root.querySelector('#faqClose');
@@ -1785,4 +1916,5 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 </body>
 </html>
-
+   <source src="https://cdn.pixabay.com/.../romantic-piano-111854.mp3" type="audio/mpeg">
+   
